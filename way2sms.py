@@ -141,3 +141,29 @@ class sms:
 		self.s.close()								# close the Session
 
 		self.loggedIn=False
+		
+if __name__ == "__main__":
+    credentials.check_secret()
+    user_data  = credentials.get_credentials()
+    user = sms(user_data[0],user_data[1])
+    start()
+    print('entere your choice.')
+    print('1. send message')
+    print('2. sendLater')
+    print('3. msgSentToday')
+    choice = int(input())
+    if choice == 1:
+            contact = contacts.get_contact()
+            msg = input('Enter Your msg: ')
+            user.send(contact[1],msg)
+    elif choice == 2:
+            contact = contacts.get_contact()
+            msg = input('Enter Your msg: ')
+            date = input('Enter date: ')
+            time = input('Enter time: ')
+            user.sendLater(contact[1],date,time)
+    elif choice == 3:
+            print('you have sent ' + user.msgSentToday()+ 'message today')
+    else:
+            user.logout()
+            
