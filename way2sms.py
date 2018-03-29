@@ -148,7 +148,6 @@ if __name__ == "__main__":
     credentials.check_secret()
     user_data  = credentials.get_credentials()
     user = sms(user_data[0],user_data[1])
-    start()
     print('entere your choice.')
     print('1. send message')
     print('2. sendLater')
