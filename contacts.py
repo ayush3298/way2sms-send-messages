@@ -22,7 +22,7 @@ def get_contact(name=None):
             lines = [line.strip().split(":", 2) for line in f.readlines()]
         if name is not None:
             for name, mobile in lines:
-                if name == username.strip():
+                if name == name.strip():
                     return name, mobile
         print("Which contact do you want to send msg? (Type number)")
         for ind, (name, mobile) in enumerate(lines):
