@@ -5,12 +5,22 @@ import getpass
 
 Contact_file = "contact.txt"
 
+def get_number():
+    number = input("Enter Contact Mobile Number: ")
+    if len(number) == 10:
+        #print(len(number))
+        return number
+        
+    else:
+        print('digits in phone number is less then 10')
+        get_number()
+
 
 def add_contact():
     with open(Contact_file, "a") as f:
         print("Enter Contact Name: ")
         f.write(str(sys.stdin.readline().strip()) + ":")
-        number = input("Enter Contact Mobile Number: ")
+        number = get_number()
         f.write(number + "\n")
 
 
@@ -27,20 +37,32 @@ def get_contact(name=None):
         print("Which contact do you want to send msg? (Type number)")
         for ind, (name, mobile) in enumerate(lines):
             print("%d: %s" % (ind + 1, name))
-        print("%d: %s" % (0, "add another contact."))
+        #print("%d: %s" % (0, "add another contact."))
         print("%d: %s" % (-1, "delete all contact."))
         try:
-            ind = int(sys.stdin.readline())
-            if ind == 0:
-                add_contact()
-                continue
-            if ind == -1:
-                delete_contact()
-                check_contact()
-                continue
-            if ind - 1 in list(range(len(lines))):
-                return lines[ind - 1]
-        except:
+            ind = input().split(',')
+            print(ind)
+            if len(ind) == 1:
+                if ind[0] == 0:
+                    add_contact()
+                    get_contact()
+                    continue
+                if ind[0] == -1:
+                    delete_contact()
+                    check_contact()
+                    continue
+                if ind[0] - 1 in list(range(len(lines))):
+                    return lines[ind[0] - 1]
+            else:
+                contact_list = list()
+                for choice in ind:
+                    choice = int(choice)
+                    if choice - 1 in list(range(len(lines))):
+                        contact_list.append(lines[choice - 1])
+                return contact_list
+                    
+        except Exception as e :
+            print(e)
             print("Wrong input. I need the number of contact to use.")
 
 
