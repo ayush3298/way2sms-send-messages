@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import credentials
 import contacts
+import time
 
 class sms:
 
@@ -109,9 +110,11 @@ class sms:
 		if self.loggedIn == False:
 			print("Can't perform since NOT logged in..!")
 			return False
-		
-		if len(msg)>139 or len(mobile_no)!=10 or not mobile_no.isdecimal():
-			return False
+		if len(msg)>139:
+												return 'Message limit exeed limit, please limit your message in 139 char'
+                
+		if len(mobile_no)!=10 or not mobile_no.isdecimal():
+			return 'please check your mobial number again'
 
 		dateparts = date.split('/')			#These steps to check for valid date and time and formatting
 		timeparts = time.split(':')
@@ -143,20 +146,42 @@ class sms:
 		self.s.close()								# close the Session
 
 		self.loggedIn=False
-		
+
+
+
 if __name__ == "__main__":
     credentials.check_secret()
     user_data  = credentials.get_credentials()
     user = sms(user_data[0],user_data[1])
     print('entere your choice.')
+    print('0. add contact')
     print('1. send message')
     print('2. sendLater')
     print('3. msgSentToday')
+    print('4. send to multiple people')
     choice = int(input())
-    if choice == 1:
+    if choice == 0 :
+            contacts.add_contact()
+    elif choice == 4:
             contact = contacts.get_contact()
             msg = input('Enter Your msg: ')
-            user.send(contact[1],msg)
+            for rcvr in contact:
+                    if user.send(rcvr[1],msg)== True:
+                            print('Message sent succesfully to ' + str(rcvr[0]))
+                            time.sleep(5)
+                    
+
+    if choice == 1:
+            contact = contacts.get_contact()
+            print(contact)
+            msg = input('Enter Your msg: ')
+
+            if user.send(contact[1],msg)== True:
+                    print('Message sent succesfully to ' + str(contact[0]))
+            else:
+                print('error occured')
+
+        
     elif choice == 2:
             contact = contacts.get_contact()
             msg = input('Enter Your msg: ')
@@ -167,4 +192,5 @@ if __name__ == "__main__":
             print('you have sent ' + user.msgSentToday()+ 'message today')
     else:
             user.logout()
+        
             
