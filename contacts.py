@@ -43,16 +43,12 @@ def get_contact(name=None):
             ind = input().split(',')
             print(ind)
             if len(ind) == 1:
-                if ind[0] == 0:
-                    add_contact()
-                    get_contact()
-                    continue
-                if ind[0] == -1:
+                if int(ind[0]) == -1:
                     delete_contact()
                     check_contact()
                     continue
-                if ind[0] - 1 in list(range(len(lines))):
-                    return lines[ind[0] - 1]
+                if int(ind[0]) - 1 in list(range(len(lines))):
+                    return lines[int(ind[0]) - 1]
             else:
                 contact_list = list()
                 for choice in ind:
